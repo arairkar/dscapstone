@@ -1,0 +1,75 @@
+AR-capstone-slides
+========================================================
+author: arairkar
+date: Feb 2020
+autosize: true
+right: 50%
+<br>
+<br>
+<br>
+<br>
+The author expresses sincere thanks to the teachers, mentors and peers of the coursera data science program for such a well designed and wonderful learning experience!
+***
+<br>
+<br>
+<br>
+![Text UI snapshot](textUI.PNG)
+
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+Synopsis
+========================================================
+
+- This report is for the capstone project  of the JHU Data Science specialization on coursera.org
+- Goal: create a text prediction UI that takes some words as text input and attempts to predict the next possible word
+- The prediction algorithm is based on dataset provided by swiftkey
+
+### Links
+- The original dataset can be downloaded from here: [swiftkey data](https://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip)
+- github repository with all source code is at: [github repository](https://github.com/arairkar/dscapstone)
+- Shiny web application at: [web application](https://arairkar.shinyapps.io/AR-capstone-final/)
+- Precleaning & ngram creation details at : [preclean](https://rpubs.com/arairkar/preclean-ngrams)
+Methodology
+========================================================
+
+### Download and sample data
+- Download data and combine a required sample english data files
+- Current version uses 30% of the input data set for computational efficiency
+
+### Precleaning data and converting into ngrams
+- Use quanteda and stringr packages to manipulate text
+- Pre-clean the data
+- Create Ngrams with occurence frequency > 1
+- bigrams are ignored as they are less likely to produce an effective prediction
+
+
+
+Text prediction algorithm and shiny app dev
+========================================================
+### Shiny app
+- A shiny app is constructed with a textbox for input text and outputs the predicted nextwords
+- Ngrams are retrieved from the stored .rds files
+- Each of the above ngrams are used to predict the nextword in that order
+- Algorithm ensures that fourgrams and threegrams are not repeated
+- As such up to 3 unique words are suggested if and when possible 
+- If no words are found, then the UI recommends user to input more words
+- Prediction are auto generated after new text is input
+- Note: The initial prediction takes a few minutes while the ngram data is loaded and preprocessed. 
+
+Summary & Future steps
+========================================================
+
+### Summary
+- A shiny web application for predicting next words for a given string has been built
+- The deployed application predicts upto 3 possible next words based on a user input string
+
+### Next steps
+- Improve the computational efficiency of the algorithm such that it can use larger set of ngram data and yet be faster and accurate.
+- Add a self learning module which learns from the user choices for next words and improves prediction accuracy and speed
+- Make the application modular and works on multiple platforms
+

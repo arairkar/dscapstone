@@ -1,0 +1,51 @@
+precleaning-ngrams
+========================================================
+author: arairkar
+date: Feb 2020
+autosize: true
+right: 60%
+***
+<br>
+<br>
+![Text UI snapshot](textUI.PNG)
+
+Precleaning of data
+========================================================
+
+- The zip file is downloaded from the swiftkey repository and unzipped
+- English files for twitter, news and blogs are extracted
+- Sampling is currently set to 30% but will be increased for the future 
+- the 3 samples are combined into one text file : txt_file
+
+Creating tokens from text file
+========================================================
+- Using the quanteda package, tokens are created 
+- non alphabetic elements are removed
+
+```{r, eval=FALSE}
+toks <- tokens_tolower(tokens(txt_file,
+                        remove_numbers = TRUE, 
+                        remove_punct = TRUE,
+                        remove_separators = TRUE,
+                        remove_url = TRUE,
+                        remove_symbols = TRUE, 
+                        remove_twitter = TRUE))
+```
+
+Ngrams creation
+========================================================
+
+- Fivegrams, fourgrams and threegrams are created and sorted by decreasing frequency
+- ngrams are then filtered for frequency > 1 and saved to .rds files
+- Twograms are ignored as they lead to incorrect predictions
+```{r, eval=FALSE}
+fivegrams <- unlist(
+        quanteda::tokens_ngrams(toks,n=5:5,concatenator=" "),
+        use.names = FALSE)
+fivegrams_dt <- setDT(data.frame(table(fivegrams)))[,by = "fivegrams"][Freq>1][order(-Freq)]
+
+droplevels(fivegrams_dt$fivegrams)
+saveRDS(fivegrams_dt,file=
+                paste0("fivegrams",as.character(sample_size*100),".rds"))
+
+```
